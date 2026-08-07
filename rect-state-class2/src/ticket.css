@@ -1,0 +1,9 @@
+.ticket{
+    /*background-color: blue;*/
+    height: 159px;
+    width: 159px;
+    border:  1px solid palevioletred;
+    font-style: italic;
+    border-radius: 1rem;
+    margin-bottom: 5px;
+}
