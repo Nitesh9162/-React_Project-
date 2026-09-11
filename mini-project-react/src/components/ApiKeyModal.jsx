@@ -72,12 +72,11 @@ export default function ApiKeyModal({ open, onClose, apiKey, onSaveKey }) {
 
         <TextField
           fullWidth
-          label="Google Gemini API Key"
+          label="Custom AI Token (Optional)"
           variant="outlined"
-          placeholder="AIzaSy..."
+          placeholder="Enter custom service token..."
           value={keyInput}
           onChange={(e) => setKeyInput(e.target.value)}
-          type="password"
           sx={{
             mt: 1,
             '& .MuiOutlinedInput-root': {

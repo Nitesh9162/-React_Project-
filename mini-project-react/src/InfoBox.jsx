@@ -19,19 +19,11 @@ import './InfoBox.css';
 export default function InfoBox({ info }) {
   if (!info) return null;
 
-  const HOT_URL =
-    'https://images.unsplash.com/photo-1447601932606-2b63e2e64331?q=80&w=1000&auto=format&fit=crop';
-  const COLD_URL =
-    'https://images.unsplash.com/photo-1542267207-f8127b454605?q=80&w=1000&auto=format&fit=crop';
-  const RAIN_URL =
-    'https://images.unsplash.com/photo-1534088568595-a066f410bcda?q=80&w=1000&auto=format&fit=crop';
-  const CLOUD_URL =
-    'https://images.unsplash.com/photo-1534088568595-a066f410bcda?q=80&w=1000&auto=format&fit=crop';
-
-  const isRain = info.humidity > 80 || info.weather?.toLowerCase().includes('rain');
-  const isHot = info.temp > 20;
-
-  const bgImage = isRain ? RAIN_URL : isHot ? HOT_URL : COLD_URL;
+  const bgGradient = isRain
+    ? 'linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%)'
+    : isHot
+    ? 'linear-gradient(135deg, #7c2d12 0%, #1e1b4b 100%)'
+    : 'linear-gradient(135deg, #0c4a6e 0%, #0f172a 100%)';
 
   const weatherIcon = isRain ? (
     <ThunderstormIcon sx={{ color: '#60a5fa', fontSize: 32 }} />
@@ -55,30 +47,15 @@ export default function InfoBox({ info }) {
           mb: 4,
         }}
       >
-        <Box sx={{ position: 'relative', height: 180, overflow: 'hidden' }}>
-          <CardMedia
-            component="img"
-            height="180"
-            image={bgImage}
-            alt={info.weather}
-            sx={{
-              filter: 'brightness(0.5) contrast(1.1)',
-              transition: 'transform 0.5s ease',
-            }}
-          />
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              background: 'linear-gradient(to bottom, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.95) 100%)',
-              display: 'flex',
-              alignItems: 'flex-end',
-              p: 3,
-            }}
-          >
+        <Box
+          sx={{
+            height: 180,
+            background: bgGradient,
+            p: 3,
+            display: 'flex',
+            alignItems: 'flex-end',
+          }}
+        >
             <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'flex-end' }}>
               <Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 0.5 }}>
@@ -109,7 +86,6 @@ export default function InfoBox({ info }) {
               </Box>
             </Box>
           </Box>
-        </Box>
 
         <CardContent sx={{ p: 3 }}>
           <Grid container spacing={2}>
