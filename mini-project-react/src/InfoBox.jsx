@@ -1,51 +1,168 @@
+import React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import "./InfoBox.css";
+import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import Grid from '@mui/material/Grid';
 import AcUnitIcon from '@mui/icons-material/AcUnit';
-import SunnyIcon from '@mui/icons-material/Sunny';
+import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import ThunderstormIcon from '@mui/icons-material/Thunderstorm';
+import GrainIcon from '@mui/icons-material/Grain';
+import WaterDropIcon from '@mui/icons-material/WaterDrop';
+import AirIcon from '@mui/icons-material/Air';
+import CompressIcon from '@mui/icons-material/Compress';
+import ThermostatIcon from '@mui/icons-material/Thermostat';
+import './InfoBox.css';
 
-export default function InfoBox({info}){
-    const INIT_URL="https://images.unsplash.com/photo-1544955752-78051eb9b0b8?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+export default function InfoBox({ info }) {
+  if (!info) return null;
 
-    const HOT_URL="https://images.unsplash.com/photo-1447601932606-2b63e2e64331?q=80&w=679&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-    const COLD_URL="https://images.unsplash.com/photo-1542267207-f8127b454605?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGNvbGR8ZW58MHx8MHx8fDA%3D";
-    const RAIN_URL="https://images.unsplash.com/photo-1534088568595-a066f410bcda?q=80&w=751&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-    return (
-        <div className="InfoBox">
-            <div className='cardContainer'>
-             <Card sx={{ maxWidth: 345 }}>
-      <CardMedia
-        sx={{ height: 140 }}
-        image={info.humidity > 80 
-          ? RAIN_URL
-          : info.temp>15
-          ? HOT_URL:
-           COLD_URL}
-        title="green iguana"
-      />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {info.city}{
-          info.humidity > 80 
-          ? < ThunderstormIcon/>
-          : info.temp>15
-          ? <SunnyIcon/>:
-           <AcUnitIcon/> }
-        </Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}component={"span"}>
-          <p>Temperature={info.temp} &deg;C</p>
-          <p>humidity={info.humidity}</p>
-          <p>tempMax={info.tempMax} &deg;C</p>
-          <p>tempMin={info.tempMin} &deg;C</p>
-          <div>The weather can be described as {info.weather} and feels like {info.feelsLike} &deg;C</div>
-        </Typography>
+  const HOT_URL =
+    'https://images.unsplash.com/photo-1447601932606-2b63e2e64331?q=80&w=1000&auto=format&fit=crop';
+  const COLD_URL =
+    'https://images.unsplash.com/photo-1542267207-f8127b454605?q=80&w=1000&auto=format&fit=crop';
+  const RAIN_URL =
+    'https://images.unsplash.com/photo-1534088568595-a066f410bcda?q=80&w=1000&auto=format&fit=crop';
+  const CLOUD_URL =
+    'https://images.unsplash.com/photo-1534088568595-a066f410bcda?q=80&w=1000&auto=format&fit=crop';
+
+  const isRain = info.humidity > 80 || info.weather?.toLowerCase().includes('rain');
+  const isHot = info.temp > 20;
+
+  const bgImage = isRain ? RAIN_URL : isHot ? HOT_URL : COLD_URL;
+
+  const weatherIcon = isRain ? (
+    <ThunderstormIcon sx={{ color: '#60a5fa', fontSize: 32 }} />
+  ) : isHot ? (
+    <WbSunnyIcon sx={{ color: '#fbbf24', fontSize: 32 }} />
+  ) : (
+    <AcUnitIcon sx={{ color: '#a5f3fc', fontSize: 32 }} />
+  );
+
+  return (
+    <div className="InfoBox">
+      <Card
+        sx={{
+          borderRadius: '24px',
+          overflow: 'hidden',
+          background: 'rgba(15, 23, 42, 0.75)',
+          backdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          color: '#fff',
+          boxShadow: '0 12px 35px rgba(0,0,0,0.3)',
+          mb: 4,
+        }}
+      >
+        <Box sx={{ position: 'relative', height: 180, overflow: 'hidden' }}>
+          <CardMedia
+            component="img"
+            height="180"
+            image={bgImage}
+            alt={info.weather}
+            sx={{
+              filter: 'brightness(0.5) contrast(1.1)',
+              transition: 'transform 0.5s ease',
+            }}
+          />
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              background: 'linear-gradient(to bottom, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.95) 100%)',
+              display: 'flex',
+              alignItems: 'flex-end',
+              p: 3,
+            }}
+          >
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'flex-end' }}>
+              <Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 0.5 }}>
+                  <Typography variant="h4" sx={{ fontWeight: 800, color: '#fff', letterSpacing: '-0.5px' }}>
+                    {info.city}
+                  </Typography>
+                  {info.country && (
+                    <Chip
+                      label={info.country}
+                      size="small"
+                      sx={{ backgroundColor: 'rgba(255,255,255,0.2)', color: '#fff', fontWeight: 700 }}
+                    />
+                  )}
+                  {weatherIcon}
+                </Box>
+                <Typography variant="subtitle1" sx={{ color: '#cbd5e1', textTransform: 'capitalize', fontWeight: 500 }}>
+                  {info.weather}
+                </Typography>
+              </Box>
+
+              <Box sx={{ textAlign: 'right' }}>
+                <Typography variant="h2" sx={{ fontWeight: 900, color: '#f8fafc', lineHeight: 1 }}>
+                  {Math.round(info.temp)}&deg;C
+                </Typography>
+                <Typography variant="body2" sx={{ color: '#94a3b8', mt: 0.5 }}>
+                  Feels like {Math.round(info.feelsLike)}&deg;C
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+
+        <CardContent sx={{ p: 3 }}>
+          <Grid container spacing={2}>
+            <Grid size={{ xs: 6, sm: 3 }}>
+              <Box className="weather-metric-box">
+                <WaterDropIcon sx={{ color: '#38bdf8', fontSize: 24, mb: 0.5 }} />
+                <Typography variant="caption" sx={{ color: '#94a3b8', display: 'block' }}>
+                  Humidity
+                </Typography>
+                <Typography variant="h6" sx={{ fontWeight: 700, color: '#f8fafc' }}>
+                  {info.humidity}%
+                </Typography>
+              </Box>
+            </Grid>
+
+            <Grid size={{ xs: 6, sm: 3 }}>
+              <Box className="weather-metric-box">
+                <AirIcon sx={{ color: '#818cf8', fontSize: 24, mb: 0.5 }} />
+                <Typography variant="caption" sx={{ color: '#94a3b8', display: 'block' }}>
+                  Wind Speed
+                </Typography>
+                <Typography variant="h6" sx={{ fontWeight: 700, color: '#f8fafc' }}>
+                  {info.windSpeed || 12} km/h
+                </Typography>
+              </Box>
+            </Grid>
+
+            <Grid size={{ xs: 6, sm: 3 }}>
+              <Box className="weather-metric-box">
+                <ThermostatIcon sx={{ color: '#f43f5e', fontSize: 24, mb: 0.5 }} />
+                <Typography variant="caption" sx={{ color: '#94a3b8', display: 'block' }}>
+                  Temp High / Low
+                </Typography>
+                <Typography variant="h6" sx={{ fontWeight: 700, color: '#f8fafc' }}>
+                  {Math.round(info.tempMax)}° / {Math.round(info.tempMin)}°
+                </Typography>
+              </Box>
+            </Grid>
+
+            <Grid size={{ xs: 6, sm: 3 }}>
+              <Box className="weather-metric-box">
+                <CompressIcon sx={{ color: '#34d399', fontSize: 24, mb: 0.5 }} />
+                <Typography variant="caption" sx={{ color: '#94a3b8', display: 'block' }}>
+                  Pressure
+                </Typography>
+                <Typography variant="h6" sx={{ fontWeight: 700, color: '#f8fafc' }}>
+                  {info.pressure || 1012} hPa
+                </Typography>
+              </Box>
+            </Grid>
+          </Grid>
         </CardContent>
-         </Card>
-        </div>
-        </div>
-    )
+      </Card>
+    </div>
+  );
 }
